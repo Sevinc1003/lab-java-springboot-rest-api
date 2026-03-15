@@ -5,10 +5,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.stereotype.Service;
+
 import az.restapi.demo.exceptions.InvalidPriceRangeException;
 import az.restapi.demo.exceptions.ProductNotFoundException;
 import az.restapi.demo.models.Product;
 
+@Service
 public class ProductService {
 
     private Map<Integer, Product> products = new HashMap<>();

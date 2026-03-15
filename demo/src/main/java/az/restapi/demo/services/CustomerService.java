@@ -5,9 +5,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.stereotype.Service;
+
 import az.restapi.demo.maps.UpdateEmailMapper;
 import az.restapi.demo.models.Customer;
 
+@Service
 public class CustomerService {
 
     Map<Integer, Customer> customers = new HashMap<>();

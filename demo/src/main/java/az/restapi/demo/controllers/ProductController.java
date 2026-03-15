@@ -27,12 +27,12 @@ public class ProductController {
     private ProductService productService;
     private ApiKeyAuthorization apiKeyAuthorization;
 
-    public ProductController(ProductService productService) {
+    public ProductController(ProductService productService, ApiKeyAuthorization apiKeyAuthorization) {
         this.productService = productService;
-
+        this.apiKeyAuthorization = apiKeyAuthorization;
     }
 
-    @PostMapping
+    @PostMapping("/new-product")
     public void createNew(@RequestHeader("API-Key") String apiKey,
             @Valid @RequestBody Product product) {
         if (apiKeyAuthorization.isUnauthorized(apiKey)) {
@@ -43,7 +43,7 @@ public class ProductController {
 
     }
 
-    @GetMapping
+    @GetMapping("/show-all")
     public List<Product> getAll(@RequestHeader("API-Key") String apiKey) {
         if (apiKeyAuthorization.isUnauthorized(apiKey)) {
             return productService.getAllProducts();
@@ -66,10 +66,10 @@ public class ProductController {
 
     @PutMapping("/{productId}")
     public void updateQuantity(@RequestHeader("API-Key") String apiKey,
-            @PathVariable int id,
+            @PathVariable int productId,
             @RequestBody int quantity) {
         if (apiKeyAuthorization.isUnauthorized(apiKey)) {
-            productService.updateQuantity(id, quantity);
+            productService.updateQuantity(productId, quantity);
         } else {
             throw new UnauthorizedException("Invalid API Key");
         }
@@ -78,9 +78,9 @@ public class ProductController {
 
     @DeleteMapping("/{productId}")
     public void deleteProduct(@RequestHeader("API-Key") String apiKey,
-            @PathVariable int id) {
+            @PathVariable int productId) {
         if (apiKeyAuthorization.isUnauthorized(apiKey)) {
-            productService.deleteProduct(id);
+            productService.deleteProduct(productId);
         } else {
             throw new UnauthorizedException("Invalid API Key");
         }
@@ -89,7 +89,7 @@ public class ProductController {
 
     @GetMapping("/category/{category}")
     public List<Product> getByCategory(@RequestHeader("API-Key") String apiKey,
-            String category) {
+            @PathVariable String category) {
         if (apiKeyAuthorization.isUnauthorized(apiKey)) {
             return productService.getByCategory(category);
         } else {
